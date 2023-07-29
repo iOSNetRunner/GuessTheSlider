@@ -9,19 +9,15 @@ import SwiftUI
 
 struct UISliderRepresentation: UIViewRepresentable {
     
-    
-    @Binding var value: Float
+    @Binding var value: Int
     
     let action: () -> Int
     
-
     func makeUIView(context: Context) -> UISlider {
         let slider = UISlider()
         slider.minimumValue = 1
         slider.maximumValue = 100
         slider.setValue(Float.random(in: 1...100).rounded(), animated: true)
-        
-        
         slider.addTarget(
             context.coordinator,
             action: #selector(Coordinator.valueSelected),
@@ -31,18 +27,14 @@ struct UISliderRepresentation: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UISlider, context: Context) {
-        value = uiView.value
+        value = Int(uiView.value)
         let opacity = CGFloat(Double(action())) / 100
         uiView.thumbTintColor = .cyan.withAlphaComponent(opacity)
-        
     }
     
     func makeCoordinator() -> Coordinator {
         Coordinator(value: $value)
     }
-    
-    
-    
 }
 
 struct UISliderRepresentation_Previews: PreviewProvider {
@@ -55,15 +47,16 @@ struct UISliderRepresentation_Previews: PreviewProvider {
 
 
 extension UISliderRepresentation {
+    
     class Coordinator: NSObject {
-        @Binding var value: Float
+        @Binding var value: Int
         
-        init(value: Binding<Float>) {
+        init(value: Binding<Int>) {
             self._value = value
         }
         
         @objc func valueSelected(_ sender: UISlider) {
-            value = sender.value
+            value = Int(sender.value)
         }
     }
 }

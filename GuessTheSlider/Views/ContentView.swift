@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var startNumber = Float.random(in: 1...100).rounded()
-    @State private var selectedValue: Float = 0
+    @State private var selectedValue: Int = 0
     @State private var alertPresented = false
     
     var body: some View {
@@ -29,7 +29,11 @@ struct ContentView: View {
                 Text("Check me!")
             }
             .alert(isPresented: $alertPresented) {
-                Alert(title: Text("SCORE"), message: Text("\n🏆 Points scored: \(computeScore()) 🏆"))
+                Alert(title: Text("SCORE"), message:
+                        computeScore() != 100
+                      ? Text("\n🏆 Points scored: \(computeScore()) 🏆")
+                      : Text("\n 🥇 WIN 🥇 \n\nPoints scored: \(computeScore())")
+                )
             }
             .padding(.bottom, 20)
             
